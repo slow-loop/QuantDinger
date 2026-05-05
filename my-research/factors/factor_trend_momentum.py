@@ -1,3 +1,20 @@
+"""
+Factor:     trend_momentum
+Hypothesis: MA crossover (fast/slow) combined with RSI relative to 50 produces a continuous
+            score that captures directional momentum strength. High positive = strong uptrend;
+            high negative = strong downtrend.
+Source:     own composition. MA-RSI composite is a standard quant building block.
+Status:     active
+
+History (append-only, newest at bottom):
+  2026-05-06  code  init. trend_score = clip(MA%diff*500, -50, 50) + (RSI - 50). Range -100 to +100.
+  2026-05-06  run   BTC/USDT 4H IC — IS 30d: IC +0.001. OOS 30d: IC +0.001 (p=0.96). Near zero.
+                    (log: 2026-05-06)
+  2026-05-06  note  No predictive edge at any horizon. IC ~0 IS and OOS. The MA+RSI composite
+                    is not informative for 30d BTC returns. Keeping active as it may be useful
+                    as a regime overlay in composite strategies, but useless standalone.
+"""
+
 # @param ma_fast int 10
 # @param ma_slow int 50
 # @param rsi_period int 14

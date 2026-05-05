@@ -1,8 +1,15 @@
-# Factor: Regime — Strong Downtrend
-# Source: cap_045_regime_trending_down — IC=+0.098 in crypto-kol-quant
-# Faithful port of capabilities/regime.py:13-17.
-# Triggers when price < MA200 AND MA50 < MA200 AND ADX > 25 (strong, confirmed downtrend).
-# Outputs negative score (short bias).
+"""
+Factor:     regime_trending_down
+Hypothesis: When price is below both MA50 and MA200 (death cross), and ADX > 25 (strong trend),
+            the confirmed bear regime suppresses bounces. Short-side trades have positive expectancy;
+            long-side trades should be avoided. Score = -1 in regime, 0 outside.
+Source:     cap_045_regime_trending_down. IC=+0.098 (short bias) reported in crypto-kol-quant.
+            Port of capabilities/regime.py:13-17.
+Status:     active
+
+History (append-only, newest at bottom):
+  2026-05-06  code  init. Trigger: close < MA200 AND MA50 < MA200 AND ADX14 > 25. Output: -1 or 0.
+"""
 
 # @param adx_threshold float 25.0
 
