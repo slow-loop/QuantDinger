@@ -1,12 +1,31 @@
-# KOL: Range Fade (long-side only) — 4H
-# Source factor: cap_013 range_fade on 4H bars
-# Discovery from TF panel: on 4H, long-side IS hit 60.6% (n=269), avg fwd +1.30%.
-# 1D was 48.5% on n=33 — 4H is the right TF for this thesis (real ranges form here).
-# Short side was coin-flip (49.4%), skip it.
+"""
+Strategy: kol_range_fade_4h_long
+Thesis:   Range fade long — buy the bottom 15% of the 20-bar range in low-ADX regimes.
+          Mean-reversion bet: price recovers to range midpoint.
+Built on: factors/factor_range_fade.py
+Status:   archived — 2% stop incompatible with daily vol; see note 2026-05-05
 
-# Range-fade is a mean-reversion bet — natural target is +2-3% (range mid). A 5% stop
-# means asymmetric R:R (loss > win) which kills expectancy after commission. Tightened
-# stop to 2% to keep trades 1:1+ R:R given small win sizes.
+History (append-only, newest at bottom):
+  2026-05-04  code  init. 4H long-only range fade, stop 5%→2% (kill R:R problem). ADX<20 gate.
+  2026-05-04  run   BTC/USDT 4H — IS: -14% Sharpe -0.10 n=90. OOS: -10% Sharpe -1.13. ❌
+                    ETH/USDT 4H — IS: -59% Sharpe -2.06. OOS: +0.4% Sharpe 0.22. Mixed.
+                    SOL/USDT 4H — IS: -60% Sharpe -1.16. OOS: -25% Sharpe -1.68. ❌
+                    BNB/USDT 4H — IS: -58% Sharpe -2.84. OOS: +11% Sharpe 1.70 PF 1.98. ✓ BNB only.
+                    (log: 2026-05-04T06:28:xx / 06:29:xx)
+  2026-05-05  run   BTC/USDT 1D — IS: -11.6% Sharpe -0.21 n=11 payoff 0.26. OOS: +14% Sharpe 1.34 n=3.
+                    BNB/USDT 1D — IS: +17.9% Sharpe 0.48 n=18. OOS: -32.8% Sharpe -1.25 n=3. ❌
+                    OOS n=3 on both 1D runs — statistically meaningless.
+                    (log: 2026-05-05T14:23:xx)
+  2026-05-05  note  Root cause diagnosis: 2% fixed stop is incompatible with daily/4H volatility.
+                    Daily ATR for BTC is typically 3-5%, so the stop fires before mean-reversion
+                    plays out. Payoff ratio consistently 0.26-0.85 — losers much bigger than winners
+                    after commission. Factor event test shows 91.7% OOS hit at 7d horizon (no stop),
+                    confirming the FACTOR has edge but the STOP destroys it.
+                    If continuing this line: switch to 1x ATR dynamic stop → new file
+                    kol_range_fade_1d_long_atr_stop.py. Otherwise archive.
+                    Decision: archiving this file. Factor itself is valid; need a new wrapper.
+"""
+
 # @strategy stopLossPct 0.02
 # @strategy tradeDirection long
 # @strategy entryPct 1.0
