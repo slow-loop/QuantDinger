@@ -4,7 +4,7 @@ Thesis:   Daily range fade long — buy the bottom 15% of the 20-day range in lo
           with a 6% stop loss (~1.5x typical BTC daily ATR of ~4%) giving mean-reversion room
           to play out over the 7-day horizon the factor event test validated.
 Built on: factors/factor_range_fade.py
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-05  code  init. structural change from kol_range_fade_4h_long.py (archived).
@@ -25,6 +25,11 @@ History (append-only, newest at bottom):
                     BNB OOS failure is a regime issue — range fade long is not a bear-market strategy.
                     Next: widen ADX threshold to 25 to increase IS n, or accept this as portfolio-
                     component only. Current evidence is inconclusive — needs more OOS cycles.
+  2026-05-06  note  ABANDONED per AGENT.md protocol. IS payoff 0.76 (<1.0) = inverted. We've now
+                    tried 2% stop (archived kol_range_fade_4h_long), 6% stop (this file), and no-stop
+                    (archived kol_range_fade_4h_long_no_stop) — all fail OOS. The underlying factor
+                    event edge (91.7% 7d hit) is real but incompatible with any fixed stop at practical
+                    position sizes. Strategy line closed. Factor kept active for future composite use.
 """
 
 # @strategy stopLossPct 0.06
