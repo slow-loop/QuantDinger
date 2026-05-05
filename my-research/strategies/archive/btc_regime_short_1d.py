@@ -6,12 +6,22 @@ Thesis:   Enter short at the START of each confirmed downtrend episode (price < 
           IS was weaker (36% hit) due to violent 2022 bear bounces — trading episodes
           rather than individual bars should reduce bounce exposure.
 Built on: factors/factor_regime_trending_down.py (inlined)
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-06  code  init. Enter SHORT at first bar of each regime episode (regime turns on).
                     Exit when regime ends (any condition flips) OR 30-bar time stop.
                     No fixed stop loss — regime provides the structural filter.
+  2026-05-06  run   BTC/USDT 1D — IS: Sharpe +0.274 n=83 PF 1.10 win 56.6% payoff 0.84.
+                    OOS: Sharpe -1.236 n=55 PF 0.53 win 41.8%. ❌ OOS failure.
+                    (log: 2026-05-06)
+  2026-05-06  note  ABANDONED. Root cause: ADX oscillates around 25, generating frequent
+                    episode_start triggers (OOS 55 trades/year = 4-5 per month). Each "episode
+                    start" enters short after a recent drop — high bounce risk. IS decent because
+                    2022 bear was more sustained. OOS choppy. The regime concept is valid but
+                    episode_start timing is the wrong entry. A persistence filter (require regime
+                    active ≥ 5 days before counting as true episode start) could be explored, but
+                    the underlying short-side structural edge may not be strong enough for crypto.
 """
 
 # @strategy tradeDirection short
