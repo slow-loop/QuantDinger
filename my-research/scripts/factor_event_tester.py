@@ -23,8 +23,8 @@ WHAT IT REPORTS (per direction × per horizon × IS/OOS split):
     - Per-trade Sharpe = mean/std (NOT annualized — see notes)
 
 USAGE:
-    docker exec -w /app quantdinger-backend python3 scratch/factor_event_tester.py \\
-        research/examples/factors/factor_200w_value_zone.py \\
+    docker exec -w /app quantdinger-backend python3 my-research/scripts/factor_event_tester.py \\
+        my-research/factors/factor_200w_value_zone.py \\
         --symbol BTC/USDT --timeframe 1D --is-days 2200 --oos-days 365 \\
         --threshold 0.1
 
@@ -62,7 +62,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
@@ -253,7 +253,7 @@ def main():
     parser.add_argument("--oos-days", type=int, default=365)
     parser.add_argument("--horizons", default="1,7,30")
     parser.add_argument("--threshold", type=float, default=0.1, help="Trigger threshold; |score|>threshold counts as event")
-    parser.add_argument("--out-dir", default="research/event_results")
+    parser.add_argument("--out-dir", default="my-research/log/results/event")
     args = parser.parse_args()
 
     factor_path = os.path.join(PROJECT_ROOT, args.factor_file)

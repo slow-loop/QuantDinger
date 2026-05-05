@@ -31,8 +31,8 @@ REFERENCES:
     Information Ratio (Goodwin 1998): active_return / tracking_error
 
 USAGE:
-    docker exec -w /app quantdinger-backend python3 scratch/strategy_evaluator.py \\
-        research/examples/strategies/kol_range_fade_4h_long.py \\
+    docker exec -w /app quantdinger-backend python3 my-research/scripts/strategy_evaluator.py \\
+        my-research/strategies/kol_range_fade_4h_long.py \\
         --symbol BTC/USDT --timeframe 4H --is-days 2200 --oos-days 365
 
 NOTES:
@@ -52,7 +52,7 @@ from datetime import datetime, timedelta
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
@@ -473,7 +473,7 @@ def main():
     parser.add_argument("--rf", type=float, default=0.0, help="Annualized risk-free rate (0 = crypto convention)")
     parser.add_argument("--is-days", type=int, default=2200)
     parser.add_argument("--oos-days", type=int, default=365)
-    parser.add_argument("--log", default="research/experiment_log.csv",
+    parser.add_argument("--log", default="my-research/log/experiment_log.csv",
                         help="Auto-append log path (relative to project root). Empty string to disable.")
     args = parser.parse_args()
 

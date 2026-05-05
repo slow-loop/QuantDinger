@@ -21,8 +21,8 @@ WHAT IT DOES (Level 2):
     6. Writes CSV alongside printing console summary.
 
 USAGE:
-    docker exec -w /app quantdinger-backend python3 scratch/factor_ic_tester.py \\
-        research/examples/factors/factor_200w_value_zone.py \\
+    docker exec -w /app quantdinger-backend python3 my-research/scripts/factor_ic_tester.py \\
+        my-research/factors/factor_200w_value_zone.py \\
         --symbol BTC/USDT --timeframe 1D --is-days 2200 --oos-days 365
 
 LEVEL 3 — NOT YET IMPLEMENTED (future work, in priority order):
@@ -84,7 +84,7 @@ def spearmanr(x, y):
     p = math.erfc(abs(t) / math.sqrt(2))
     return r, p
 
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
@@ -383,7 +383,7 @@ def main():
     parser.add_argument("--oos-days", type=int, default=365)
     parser.add_argument("--horizons", default="1,7,30", help="Comma-separated forward-return horizons in bars")
     parser.add_argument("--rolling-window", type=int, default=90, help="Rolling IC window in bars")
-    parser.add_argument("--out-dir", default="research/ic_results")
+    parser.add_argument("--out-dir", default="my-research/log/results/ic")
     args = parser.parse_args()
 
     factor_path = os.path.join(PROJECT_ROOT, args.factor_file)

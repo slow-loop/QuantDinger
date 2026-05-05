@@ -2,7 +2,7 @@ import os
 import sys
 
 # Add app directory to path robustly
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.append(PROJECT_ROOT)
 
@@ -11,47 +11,47 @@ from app.utils.db import get_db_connection
 strategies = [
     {
         'name': 'SMA_Cross_RSI_Basic',
-        'file': 'research/examples/strategies/sma_cross_rsi_basic.py',
+        'file': 'my-research/strategies/sma_cross_rsi_basic.py',
         'desc': '基础双均线金叉 + RSI 超买过滤'
     },
     {
         'name': 'SMA_Cross_RSI_ATR_Dynamic_Stop',
-        'file': 'research/examples/strategies/sma_cross_rsi_atr_dynamic_stop.py',
+        'file': 'my-research/strategies/sma_cross_rsi_atr_dynamic_stop.py',
         'desc': '均线策略 + ATR 波动率过滤 + 动态止损'
     },
     {
         'name': 'SMA_Cross_RSI_ADX_Trend_Filter',
-        'file': 'research/examples/strategies/sma_cross_rsi_adx_trend_filter.py',
+        'file': 'my-research/strategies/sma_cross_rsi_adx_trend_filter.py',
         'desc': '均线策略 + ADX 趋势强度过滤 + 趋势确认'
     },
     {
         'name': 'Factor Trend Momentum',
-        'file': 'research/examples/factors/factor_trend_momentum.py',
+        'file': 'my-research/factors/factor_trend_momentum.py',
         'desc': '纯因子：多空动量综合得分'
     },
     {
         'name': 'Factor Volatility Squeeze',
-        'file': 'research/examples/factors/factor_volatility_squeeze.py',
+        'file': 'my-research/factors/factor_volatility_squeeze.py',
         'desc': '纯因子：布林带与肯特纳通道挤压'
     },
     {
         'name': 'Factor Mean Reversion',
-        'file': 'research/examples/factors/factor_mean_reversion.py',
+        'file': 'my-research/factors/factor_mean_reversion.py',
         'desc': '纯因子：价格偏离均线的Z-Score'
     },
     {
         'name': 'Factor_Funding_Rate',
-        'file': 'research/examples/factors/factor_funding_rate.py',
+        'file': 'my-research/factors/factor_funding_rate.py',
         'desc': '纯因子：币安历史资金费率'
     },
     {
         'name': 'FundingRate_BottomFisher',
-        'file': 'research/examples/strategies/funding_rate_bottom_fisher.py',
+        'file': 'my-research/strategies/funding_rate_bottom_fisher.py',
         'desc': '策略：资金费率抄底策略'
     },
     {
         'name': 'KOL_Range_Fade_4H_Long',
-        'file': 'research/examples/strategies/kol_range_fade_4h_long.py',
+        'file': 'my-research/strategies/kol_range_fade_4h_long.py',
         'desc': '策略：4H区间震荡做多 (BNB最佳)'
     }
 ]
