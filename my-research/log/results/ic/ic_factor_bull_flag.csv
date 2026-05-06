@@ -1,0 +1,4 @@
+score_col,horizon_d,ic_full,pval_full,n_full,ic_IS,pval_IS,n_IS,ic_OOS,pval_OOS,n_OOS,IS_n_long,IS_n_short,IS_hit_long,IS_hit_short,IS_avg_ret_long,IS_avg_ret_short
+bull_flag_score,1,,,0,,,0,,,0,0,0,,,,
+bull_flag_score,7,,,0,,,0,,,0,0,0,,,,
+bull_flag_score,30,,,0,,,0,,,0,0,0,,,,
