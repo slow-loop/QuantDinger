@@ -18,6 +18,17 @@ History (append-only, newest at bottom):
                     Entry: close > upper_band AND compression was present in last look_back bars.
                     Exit: close < EMA (midline of channel) — price rejects back to center.
                     OR timeout (30 bars). Platform SL as backstop.
+  2026-05-12  run   ETH 4H OOS: Sharpe +0.076, Sortino +0.072, Calmar -0.347, IR +1.152, PF 1.01.
+                    OOS n=30, Win% 33.3%, Payoff 2.01. Return -2.97% vs ETH B&H -23.09% (+20pp alpha).
+                    FAIL 1/5 (only IR passes). Active as portfolio component due to IR>1.0 and alpha.
+                    IS: Sharpe 4.63, Sortino 9.45 (extreme bull overfitting).
+                    (log: 2026-05-12)
+  2026-05-12  note  Keltner compression → expansion fires with better selectivity than Donchian
+                    (n=30 vs n=17 in Donchian, OOS). But payoff 2.01 at 33% win rate = breakeven PF.
+                    Need either (a) higher win rate or (b) higher payoff to pass standalone.
+                    The compression filter (5 bars inside) is too short — try compress_bars=10 in
+                    a new file for a more selective version. Or try on 1D timeframe where moves
+                    are larger (better payoff ratio). Keep active as portfolio component.
 """
 
 # @strategy stopLossPct 0.04
