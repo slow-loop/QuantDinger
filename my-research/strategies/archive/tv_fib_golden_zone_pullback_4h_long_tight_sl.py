@@ -7,7 +7,7 @@ Thesis:   Same Fib golden zone pullback mechanism as tv_fib_golden_zone_pullback
 Source:   Structural improvement on tv_fib_golden_zone_pullback_4h_long.py
           Concept: ICT OTE (Optimal Trade Entry) zones with extension targets.
           Ref: https://www.tradingview.com/script/ckxO7z13-Confirmed-Fibonacci-BOS-Pullback/
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-12  code  init. Structural variant of tv_fib_golden_zone_pullback_4h_long.
@@ -19,6 +19,17 @@ History (append-only, newest at bottom):
                     Platform stopLossPct is set conservatively (5%) as a hard backstop
                     in case the structural SL can't fire (gap down). The 65% retrace level
                     is the actual intended stop.
+  2026-05-12  run   BTC 4H OOS: Sharpe -2.27, PF 0.56, Win% 25.5%, n=51. FAIL 0/5.
+                    Payoff 1.63 improved vs base (0.66) but win rate collapsed (25.5% vs 62.5%).
+                    1.618 TP almost never hit; tight 65% SL fires frequently. Archived.
+                    (log: 2026-05-12)
+  2026-05-12  note  65% retrace SL is only 3.2% wide from 61.8% zone edge — too tight for
+                    crypto 4H noise. 1.618 extension TP requires a ~60% move from entry — almost
+                    never achieved in 4H BTC. This variant is mechanically broken.
+                    Base version (tv_fib_golden_zone_pullback_4h_long) still has the edge —
+                    the directional mechanism (62.5% OOS win rate) is sound. The exit
+                    improvement needs to be incremental, not aggressive (e.g., TP at 1.0
+                    extension + ATR trailing, not 1.618).
 """
 
 # @strategy stopLossPct 0.05
