@@ -17,6 +17,15 @@ History (append-only, newest at bottom):
                     Exit: close drops below rolling N-bar low (channel midpoint alternative)
                     OR close below EMA(50) as trend end signal OR timeout.
                     SL: platform 5% hard stop as backstop.
+  2026-05-12  run   ETH 4H OOS: Sharpe -0.901, PF 0.78, Win% 29.4%, n=17. FAIL 0/5.
+                    IS: Sharpe 4.91, Sortino 7.67 — extreme bull-market overfitting.
+                    OOS beats B&H by 7pp (-16% vs -23%) but too weak for pass.
+                    (log: 2026-05-12)
+  2026-05-12  note  55-bar Donchian new high in choppy ETH is a bear trap (brief spike then
+                    reversal). Kumo breakout is more selective because the cloud has already
+                    tested/rejected price — it requires price to absorb the cloud resistance.
+                    Volume gate helps but not enough to overcome the entry selectivity gap.
+                    Archived. Do not retry Donchian on 4H without a stronger confluence filter.
 """
 
 # @strategy stopLossPct 0.05
