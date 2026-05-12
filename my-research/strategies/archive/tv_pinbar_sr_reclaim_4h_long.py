@@ -8,7 +8,7 @@ Source:   Adapted from felipemiransan "Price Action Strategy" on TradingView
           https://www.tradingview.com/script/6jwIsZAE/
           Original: Hammer/Doji/PinBar near dynamic S/R (16-bar pivot, 1.8% sensitivity).
           Adapted: long-only, 4H timeframe, tighter sensitivity, ATR-based SL.
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-12  code  init. Port from felipemiransan Price Action Strategy (TV).
@@ -17,6 +17,16 @@ History (append-only, newest at bottom):
                     Hammer: lower wick >= body*2, body in upper 1/3 of range, range > ATR*0.5.
                     Pin Bar: lower wick >= total_range*0.6, small body at top of range.
                     Exit: ATR 2x SL (hard), 20-bar timeout (soft), 8% TP (profit target).
+  2026-05-12  run   BTC 4H OOS: Sharpe -1.12, PF 0.60, Win% 54.5, n=11. FAIL 0/5.
+                    IS Win% 69.9% but payoff 0.50 (avg win $613 vs avg loss $1230) — exit
+                    broken, strategy too promiscuous (88% time in market). Archived.
+                    (log: 2026-05-12)
+  2026-05-12  note  Root cause: TP proxy (close > support*1.08) exits too early; timeout
+                    lets losses compound. Rolling-min support fires too frequently (82-88%
+                    in-market) — not selective enough. If revisiting: require multi-bar
+                    consolidation at support before entry (compresses range, reduces false
+                    positives). Also needs proper exit: fixed ATR-trail, not level proxy.
+                    Do not retry this exit structure.
 """
 
 # @strategy stopLossPct 0.03
