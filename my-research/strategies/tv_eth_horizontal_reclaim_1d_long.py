@@ -14,6 +14,19 @@ History (append-only, newest at bottom):
   2026-05-12  code  init. Inline horizontal_reclaim logic (50d high reclaim after ≥3% below
                     for 10 bars). Entry on reclaim bar. Exit: 30-bar timeout OR price drops
                     stop_pct (5%) below entry bar close. Long only. ETH-specific.
+  2026-05-12  run   ETH/USDT 1D — IS: Sharpe +1.49 Sortino +1.33 Calmar +3.05 PF 1.67 n=61 ✓
+                    OOS: Sharpe +1.61 Sortino +1.33 Calmar +2.99 IR +0.46 PF 3.07 n=10.
+                    OOS: +40.69% return vs BTC B&H -13.66%. 17.6% time in market.
+                    PASS: Sharpe ✅ Calmar ✅ PF ✅ | MISS: Sortino ⚠️ (1.33<1.5) IR ⚠️ (0.46<0.5).
+                    OOS n=10 thin but PF 3.07 is unusually strong. Payoff ratio 4.61 (large winner
+                    asymmetry) carrying the equity curve. Sortino miss driven by single large
+                    drawdown in IS regime (-46%). ETH-specific; BTC OOS failed (Sharpe -1.71).
+                    (log: 2026-05-12T05:27:01)
+  2026-05-12  note  CONDITIONAL PASS — 3/5 criteria met. Promising as portfolio component given
+                    PF 3.07 and Calmar 2.99 OOS. Monitor OOS as new bars accrue. Do not deploy
+                    on BTC (failed). Parameters locked for now: lookback=50, below_pct=3%,
+                    timeout=30, stop=5%. Future structural variant could add ADX/trend filter
+                    to reduce IS drawdown and push Sortino above 1.5.
 """
 
 # @strategy stopLossPct 0.05
