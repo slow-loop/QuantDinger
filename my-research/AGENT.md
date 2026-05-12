@@ -68,7 +68,21 @@ https://www.tradingview.com/scripts/candlestickpatterns/
 https://www.tradingview.com/scripts/volume/
 ```
 
-每頁瀏覽 10–20 個 scripts，列出候選表（Name / Author / Likes / 快篩結果），選 1 個最清楚的。
+每頁瀏覽 10–20 個 scripts，列出候選表並按下列標準排序，選排最前面且通過快篩的 1 個。
+
+**候選排序標準**（依重要性）：
+1. Open source Pine Script 可讀（hard filter — 無法讀原始碼就跳過）
+2. Crypto-native（非 forex / 股票策略移植；timeframe 4H / 1D 優先）
+3. Structural / catalyst-based（reclaim、breakout、compression→expansion — 已知有效 pattern）
+4. Likes 數（社群驗過；同類型取 likes 高的）
+5. 低參數複雜度（參數愈少愈好，overfitting 風險低）
+
+**Dedup（port 前必做）**：
+```bash
+grep -r "tradingview.com" my-research/strategies/ my-research/strategies/archive/
+```
+Source URL 已出現過 → 跳過，換下一個。TV script URL 是唯一 key，不用維護額外清單。
+
 命名前綴：`tv_`。Source 欄填完整 TV 頁面 URL。
 
 **2. GitHub freqtrade community**（TV 找不到或太少）
