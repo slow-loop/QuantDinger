@@ -14,6 +14,14 @@ History (append-only, newest at bottom):
                     = macd_line crosses above signal_line on same bar. Volume gate
                     = volume > vol_sma * vol_mult. Exit: MACD line crosses below 0
                     OR ATR stop OR 40-bar timeout.
+  2026-05-12  run   BTC 4H OOS: Sharpe +0.266, IR +2.164 (elite), PF 1.16, n=8. FAIL 1/5.
+                    ETH 4H OOS: Sharpe +1.565✅, Sortino +1.230⚠️, Calmar +5.877✅, IR +0.593✅,
+                    PF 1.74✅, Win% 25.0%, payoff 5.22, n=8. PASS 4/5. Conditional pass.
+                    +20.41% vs ETH B&H +6.84%. Sortino narrowly misses 1.5 threshold.
+  2026-05-12  note  ETH-specific pass (4/5). Same Sharpe 1.565 as tv_ichimoku_kumo but
+                    different mechanism (BOS+MACD vs Kumo cloud breakout). Sortino miss is
+                    likely driven by a few larger losses in the 25% win rate. The high payoff
+                    (5.22) compensates. Keep active as ETH 4H portfolio component.
 """
 
 # @strategy stopLossPct 0.03
