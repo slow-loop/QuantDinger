@@ -6,7 +6,7 @@ Thesis:   Statistical mean-reversion — when price Z-score is extreme (>2σ awa
 Source:   https://www.tradingview.com/script/92rilzXd-Z-Score-Mean-Reversion-Pro/
           (Z-Score Mean Reversion Pro by ayusattv, open-source Pine Script v5)
 Built on: no external factors — Z-score, RSI, BB all computed inline
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-12  code  init. port from TradingView Z-Score Mean Reversion Pro (ayusattv).
@@ -17,6 +17,22 @@ History (append-only, newest at bottom):
                     OR price crosses EMA trend filter in direction of trade (trend exit)
                     OR 20-bar timeout. Stop: ATR-based (2x ATR).
                     No talib — all indicators computed with pandas/numpy EWM + rolling.
+  2026-05-12  run   BTC/USDT 4H OOS: Sharpe -0.962, Sortino -0.892, Calmar -1.284,
+                    PF 0.62, n=10, WR 60%. FAIL 0/5 criteria.
+                    ETH/USDT 4H OOS: Sharpe -1.172, Sortino -0.998, Calmar -1.618,
+                    PF 0.48, n=8, WR 50%. FAIL 0/5 criteria.
+                    (log: 2026-05-12T — see experiment_log.csv)
+  2026-05-12  note  Root cause: payoff ratio ~0.48 on both assets — avg loss ~2x avg win.
+                    Crypto fat tails mean Z-score=2.0 does NOT mark the mean-reversion
+                    point; price extends to Z=4-5 before reversing. Strategy takes stop
+                    losses frequently on the extension leg, then misses the actual reversion
+                    when it fires timeout exit. Classic early-entry mean-reversion trap.
+                    In forking markets the BBW filter blocks many entries but those that
+                    pass still catch the falling knife mid-extension.
+                    Archiving. If revisiting: consider entry only on Z-score PEAK (dZ/dt
+                    sign change) not threshold cross, or wider stop with inverse Kelly sizing.
+                    → archived to my-research/strategies/archive/tv_zscore_mean_reversion_4h.py
+Status:   archived
 """
 
 # @strategy stopLossPct 0.03
@@ -147,10 +163,13 @@ df['buy_close']  = long_exit_final.fillna(False).astype(bool)
 # Close existing short
 df['sell_close'] = short_exit_final.fillna(False).astype(bool)
 
-# ── Optional plots ────────────────────────────────────────────────────────────
-output['plots'] = {
-    'zscore':    zscore.tolist(),
-    'rsi':       rsi.tolist(),
-    'bbw':       bbw.tolist(),
-    'ema':       ema.tolist(),
+# ── Output ────────────────────────────────────────────────────────────────────
+output = {
+    "name": "Z-Score Mean Reversion 4H",
+    "plots": [
+        {"name": "zscore",  "data": zscore.fillna(0).tolist(),  "color": "#FF6B6B", "overlay": False},
+        {"name": "rsi",     "data": rsi.fillna(50).tolist(),    "color": "#4ECDC4", "overlay": False},
+        {"name": "bbw",     "data": bbw.fillna(0).tolist(),     "color": "#FFE66D", "overlay": False},
+        {"name": "ema",     "data": ema.fillna(0).tolist(),     "color": "#A8E6CF", "overlay": True},
+    ]
 }
