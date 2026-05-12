@@ -48,6 +48,24 @@ my-research/
         └── ic/                  ← factor_ic_tester outputs
 ```
 
+## [SCOUTING — 策略來源]
+
+每次 session 開始，從下面來源挑 1–3 個策略 idea，評估後進 Track A 或 B。
+
+**來源優先序**：
+1. **TradingView Public Scripts** — 搜 crypto strategy，看 community 評分 + built-in backtest。Pine Script → Python 翻譯後 port 進 `my-research/strategies/`。
+2. **GitHub freqtrade community** — `freqtrade/freqtrade-strategies` repo，策略已是 Python，轉換成本低。
+3. **Twitter / X KOL** — 只在有明確 entry/exit 條件時才處理（不處理純評論 / 行情猜測）。
+
+**快篩（30 秒決定要不要 port）**：
+- 能一句話寫出 Hypothesis？→ 繼續
+- 有明確 entry / exit 條件（可 vectorize 成 df['buy'] / df['sell']）？→ 繼續
+- 兩者都不行 → 跳過
+
+**沒有 inbox / scout 清單**：直接從來源找到就 port，backtest 是唯一品質守門員。
+
+---
+
 ## [WORKFLOW SOP]
 
 Two parallel tracks. **Validate factors first; then build strategies on validated ones.**
