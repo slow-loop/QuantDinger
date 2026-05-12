@@ -7,12 +7,20 @@ Thesis:   HLHB system adapted for crypto 4H — enter long when EMA5 crosses abo
 Built on: (inline indicators — no external factor dependency)
 Source:   https://github.com/freqtrade/freqtrade-strategies/blob/main/user_data/strategies/hlhb.py
           Original concept: https://www.babypips.com/trading/forex-hlhb-system-explained
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-12  code  init. Port from freqtrade/hlhb.py. EMA5/EMA10 crossover + RSI(10,HL2) > 50
                     + ADX > 25. Exit: EMA5 crosses below EMA10 AND RSI < 50. Stop 4%.
                     Timeout 40 bars (10 days). Long only. BTC/USDT 4H.
+  2026-05-12  run   BTC/USDT 4H IS: Sharpe +2.005, Sortino +2.132, Calmar +11.08, PF 1.32, n=62.
+                    OOS: Sharpe -2.184, Sortino -1.237, Calmar -2.170, IR -0.299, PF 0.51, n=15. ❌
+                    (log: 2026-05-12)
+  2026-05-12  note  ARCHIVED. Severe IS/OOS mismatch. IS (2020-2025 bull cycle) misleading —
+                    strategy learned crypto uptrend regime. OOS (2025-2026 choppy/bear) collapses:
+                    Sharpe -2.18, PF 0.51, win rate 33%. The simultaneous EMA+RSI dual-crossover
+                    requirement makes entries too sparse (n=15 OOS) and too late into moves.
+                    The original forex HLHB system does not translate to crypto 4H OOS regime.
 """
 
 # @strategy tradeDirection long
