@@ -9,7 +9,7 @@ Source:   Ported from TradingView — "RSI Divergence Strategy" by AliferCrypto 
           URL: https://www.tradingview.com/script/Spg5RGk1-RSI-Divergence-Strategy-AliferCrypto/
           Mechanism: price lower low + RSI higher low on confirmed swing pivots.
           ATR-based SL and RSI-overbought exit preserved in port.
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-12  code  init. RSI computed via Wilder EWM. Pivot detection via rolling argmin
@@ -18,6 +18,23 @@ History (append-only, newest at bottom):
                     where j is the most recent prior pivot. Entry on confirmation bar close.
                     Stop = ATR * atr_sl_mult below entry. Exit: RSI crosses above rsi_exit
                     OR timeout_bars elapsed. Long only (bullish divergence only).
+  2026-05-12  run   BTC/USDT 4H — IS: Sharpe +3.17 Sortino +1.78 Calmar +46.5 PF 1.95 n=42 ✓
+                    BTC/USDT 4H — OOS: Sharpe -2.78 Sortino -1.47 Calmar -2.71 PF 0.25 n=12. FAIL.
+                    ETH/USDT 4H — IS: Sharpe +1.15 PF 1.13 n=50.
+                    ETH/USDT 4H — OOS: Sharpe -3.36 PF 0.05 n=9. Win rate 11%. FAIL.
+                    (log: 2026-05-12)
+  2026-05-12  note  FAIL. Archive. Root cause: bullish RSI divergence in a downtrending
+                    regime (2025-26) becomes a "catch falling knife" signal. Price keeps
+                    making lower lows with higher RSI (momentum deteriorates slowly while
+                    price extends), so the divergence fires repeatedly but ATR stops are
+                    hit sequentially. OOS BTC win rate 50% but payoff 0.25 (losses 4x
+                    wins). ETH win rate 11% — essentially systematic stop-hunting.
+                    Key learning: RSI divergence requires a TREND REVERSAL context, not
+                    just momentum divergence in isolation. In a persistent downtrend, every
+                    bullish divergence is followed by another lower low. Need to gate on
+                    a macro regime filter (e.g., BTC above 200-week MA or HTF structure
+                    break) to avoid catching knives. Revisit only with strong trend-
+                    reversal confirmation as a prerequisite gate.
 """
 
 # @strategy stopLossPct 0.05
@@ -77,8 +94,8 @@ price_at_pivot = df['close'].where(is_pivot_low)  # price only at pivot lows
 # ── Divergence signal ─────────────────────────────────────────────────────────
 # For each bar, look back up to max_pivot_gap bars for the most recent prior pivot.
 # If current pivot: price[now] < price[prior] AND rsi[now] > rsi[prior] → bullish divergence.
-n      = len(df)
-signal = pd.Series(False, index=df.index)
+n        = len(df)
+div_flag = pd.Series(False, index=df.index)
 
 # Build arrays for vectorized comparison
 rsi_arr   = rsi_at_pivot.values
@@ -100,12 +117,12 @@ for i in range(max_pivot_gap + L, n - L):
         continue
     # Bullish divergence: price lower low + RSI higher low
     if price_arr[i] < price_arr[j] and rsi_arr[i] > rsi_arr[j]:
-        signal.iloc[i] = True
+        div_flag.iloc[i] = True
 
 # The divergence fires at pivot-low bar i, but i is only confirmed pivot_lookback bars
 # AFTER the actual low (we need future bars for the right side of the pivot).
 # So the entry signal should be on bar i + L (the first bar after confirmation).
-buy_raw  = signal.shift(L).fillna(False).astype(bool)
+buy_raw  = div_flag.shift(L).fillna(False).astype(bool)
 
 # De-duplicate: only enter once per divergence (no re-entry until prior trade expires)
 # A simple cooldown: suppress subsequent signals within timeout_bars of the last entry.
@@ -132,7 +149,7 @@ output = {
     "name": "RSI Divergence 4H Long",
     "plots": [
         {"name": "RSI",        "data": rsi.fillna(50).tolist(),            "color": "#2196F3", "overlay": False},
-        {"name": "div_signal", "data": signal.astype(float).tolist(),      "color": "#FF5722", "overlay": False},
+        {"name": "div_signal", "data": div_flag.astype(float).tolist(),    "color": "#FF5722", "overlay": False},
         {"name": "ATR",        "data": atr.fillna(0).tolist(),             "color": "#9C27B0", "overlay": False},
     ]
 }
