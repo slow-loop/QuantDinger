@@ -50,19 +50,61 @@ my-research/
 
 ## [SCOUTING — 策略來源]
 
-每次 session 開始，從下面來源挑 1–3 個策略 idea，評估後進 Track A 或 B。
+**每次 session 先做 scouting，再進 Track A/B。不管 backlog 有沒有東西。**
 
-**來源優先序**：
-1. **TradingView Public Scripts** — 搜 crypto strategy，看 community 評分 + built-in backtest。Pine Script → Python 翻譯後 port 進 `my-research/strategies/`。
-2. **GitHub freqtrade community** — `freqtrade/freqtrade-strategies` repo，策略已是 Python，轉換成本低。
-3. **Twitter / X KOL** — 只在有明確 entry/exit 條件時才處理（不處理純評論 / 行情猜測）。
+### 來源優先序
 
-**快篩（30 秒決定要不要 port）**：
+**1. TradingView Public Scripts（最優先）**
+
+直接 WebFetch 以下分類 URL，每次挑 1 個：
+
+```
+https://www.tradingview.com/scripts/strategy/          ← 綜合策略
+https://www.tradingview.com/scripts/bollingerbands/
+https://www.tradingview.com/scripts/meanreversion/
+https://www.tradingview.com/scripts/divergence/?script_type=strategies
+https://www.tradingview.com/scripts/ichimoku/
+https://www.tradingview.com/scripts/candlestickpatterns/
+https://www.tradingview.com/scripts/volume/
+```
+
+每頁瀏覽 10–20 個 scripts，列出候選表（Name / Author / Likes / 快篩結果），選 1 個最清楚的。
+命名前綴：`tv_`。Source 欄填完整 TV 頁面 URL。
+
+**2. GitHub freqtrade community**（TV 找不到或太少）
+
+`https://github.com/freqtrade/freqtrade-strategies` — Python 原生，轉換成本低。
+命名前綴：`ft_`。
+
+**3. Twitter / X KOL**（有明確 entry/exit 才處理，純評論跳過）
+
+---
+
+### 快篩（每個候選 30 秒決定）
+
 - 能一句話寫出 Hypothesis？→ 繼續
-- 有明確 entry / exit 條件（可 vectorize 成 df['buy'] / df['sell']）？→ 繼續
-- 兩者都不行 → 跳過
+- 有明確 entry / exit 條件（可 vectorize 成 `df['buy']` / `df['sell']`）？→ 繼續
+- Open source Pine Script 可讀？→ 繼續
+- 以上任一不行 → 跳過，換下一個
 
-**沒有 inbox / scout 清單**：直接從來源找到就 port，backtest 是唯一品質守門員。
+---
+
+### 已知失敗模式（不再 port）
+
+根據 2026-05-12 10 輪實驗：
+
+| 類型 | 失敗原因 |
+|---|---|
+| EMA/MA crossover | 2025–26 趨勢 regime 差，OOS 崩潰 |
+| Z-score / Bollinger stat threshold | Crypto fat tail 使信號延伸而非回歸 |
+| RSI divergence（無 macro gate）| 下跌趨勢中 bullish divergence = 接刀子 |
+| 任何純統計 threshold（無 structural catalyst）| 通不過 OOS |
+
+**有效的 pattern**：structural event（price reclaims key level / Kumo breakout / structure break after compression）。
+
+---
+
+**沒有 inbox**：找到就 port，backtest 是唯一品質守門員。
 
 ---
 
