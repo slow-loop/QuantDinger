@@ -16,6 +16,14 @@ History (append-only, newest at bottom):
                     Entry: close breaks above cloud top from below/inside + Tenkan > Kijun.
                     Exit: close drops below cloud bottom OR 30-bar timeout.
                     Testing SOL/USDT generalization of ETH 5/5 Kumo pass.
+  2026-05-12  run   SOL/USDT 4H OOS: Sharpe +0.699, Sortino +0.676, Calmar +0.908✅, IR +2.000✅,
+                    PF 1.19, Win% 30.8%, payoff 2.67, n=13. PASS 2/5.
+                    +6.23% vs SOL B&H -30.70% (+37pp alpha). Keep active as portfolio component.
+  2026-05-12  note  SOL partial pass (2/5): Kumo mechanism partially generalizes to SOL but
+                    with lower conviction than ETH. ETH had payoff 7.95; SOL has 2.67. Both
+                    exceed 1.0 (positive R:R) but ETH is far more selective. SOL has more
+                    frequent cloud breaks (n=13 vs ETH n=12) but fewer result in runaway moves.
+                    IR 2.0 (elite) confirms genuine alpha. Keep as portfolio component.
 """
 
 # @strategy stopLossPct 0.05
