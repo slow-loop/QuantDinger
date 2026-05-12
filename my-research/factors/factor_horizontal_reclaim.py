@@ -19,6 +19,11 @@ History (append-only, newest at bottom):
   2026-05-06  note  Keep active pending regime change. IS edge is robust (n=255, 67.5% hit).
                     OOS failure is plausibly 2025-26 choppy-market artifact. Do NOT use in strategy
                     until OOS expectancy turns positive. Retest after 3-6 months.
+  2026-05-10  run   ETH/USDT 1D cross-test — IS 30d: hit 60.7% n=298 avg +11.15% Sharpe +0.398.
+                    OOS 30d: hit 78.1% n=32 avg +14.39% Sharpe +0.751 ✅ stable.
+                    BTC OOS failure is not universal; ETH horizontal reclaim has positive OOS
+                    expectancy and is now a valid candidate for ETH-specific strategy research.
+                    (log: event_factor_horizontal_reclaim.csv)
 """
 
 import pandas as pd
