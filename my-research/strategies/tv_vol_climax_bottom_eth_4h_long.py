@@ -37,6 +37,10 @@ History (append-only, newest at bottom):
                     is the `decline_bars` + large_bar combination, not vol_mult.
                     Keep active — mechanism is sound on SOL, needs more OOS data.
                     ETH OOS too small (n=5) + flat metrics — ETH version essentially inconclusive.
+  2026-05-15  run   BTC/USDT 4H IS: Sharpe -0.006, n=26. OOS: Sharpe -0.745, PF 0.60, n=6.
+                    FAIL. BTC too liquid for selling cascades — deep order book absorbs without
+                    sharp reversal. Vol Climax is SOL-specific; BTC has no edge.
+                    Cross-asset: SOL >> ETH > BTC for this mechanism.
 """
 
 # @strategy stopLossPct 0.05

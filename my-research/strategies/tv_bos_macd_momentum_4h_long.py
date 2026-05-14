@@ -22,6 +22,11 @@ History (append-only, newest at bottom):
                     different mechanism (BOS+MACD vs Kumo cloud breakout). Sortino miss is
                     likely driven by a few larger losses in the 25% win rate. The high payoff
                     (5.22) compensates. Keep active as ETH 4H portfolio component.
+  2026-05-15  run   SOL/USDT 4H IS: Sharpe +3.723 (elite), OOS: Sharpe -2.186, PF 0.27, n=11.
+                    BTC/USDT 4H IS: Sharpe +5.546 (elite), OOS: Sharpe +0.087, PF 1.05, n=7.
+                    Both FAIL. BOS+MACD is ETH-specific — bull-trend momentum structure in
+                    ETH OOS period (2025-2026) doesn't replicate on SOL/BTC. IS extreme values
+                    (5×+ Sharpe) confirm bull-regime overfit; OOS collapses on all non-ETH assets.
 """
 
 # @strategy stopLossPct 0.03

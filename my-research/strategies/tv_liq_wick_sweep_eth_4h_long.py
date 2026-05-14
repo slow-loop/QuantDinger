@@ -24,7 +24,14 @@ History (append-only, newest at bottom):
                     payoff 1.09→0.82. Liq sweep mechanism exists in both bull/bear but bear
                     recoveries weaker. NOT archiving — IR 2.102 IS warrants further iteration
                     (vol_mult tuning, or multi-symbol diversification across BTC+SOL).
-                    Next: test on BTC/USDT 4H to check if IS alpha generalizes cross-asset.
+  2026-05-15  run   SOL/USDT 4H IS: Sharpe +0.233, n=62. OOS: Sharpe +1.920✅, Sortino +0.924⚠️,
+                    Calmar +5.666✅, IR +1.144✅, PF 2.010✅, n=11. PASS 4/5 (Sortino miss).
+                    → dedicated file: tv_liq_wick_sweep_sol_4h_long.py
+                    BTC/USDT 4H IS: Sharpe -0.326, n=66. OOS: Sharpe +1.552, IR +0.304, PF 1.90,
+                    n=16. FAIL 3/5 (Sortino +1.078 ❌, IR +0.304 ❌). Not creating BTC file.
+                    Cross-asset: SOL (4/5 OOS) > BTC (3/5) > ETH (OOS fail). SOL-specific alpha.
+                    Regime insight: ETH IS elite (IR 2.102) but OOS fails; SOL IS weak but OOS
+                    strong — ETH has IS bull-market edge, SOL has OOS bear-market edge.
   2026-05-14  code  init. Wick proxy conditions:
                     (1) bar sweeps N-bar low: low < rolling_min_low (new low)
                     (2) recovery: close > previous close (recovered)

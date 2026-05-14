@@ -33,6 +33,11 @@ History (append-only, newest at bottom):
                     cleaner directional follow-through so SFPs resolve less reliably; bear
                     market (2025-2026) has more liquidity grabs that DO reverse. Long-term
                     this strategy may have asymmetric regime exposure. Monitor going forward.
+  2026-05-15  run   BTC/USDT 4H IS: Sharpe -0.002, n=139. OOS: Sharpe +1.574✅, Sortino +1.126⚠️,
+                    Calmar +5.841✅, IR +0.579✅, PF 1.657✅, n=31. PASS 4/5 (Sortino miss).
+                    → dedicated file: tv_sfp_reversal_btc_4h_long.py
+                    Cross-asset summary: OOS > IS pattern confirmed on ETH, SOL, and BTC.
+                    SFP is a consistent bear-market reversal mechanism across all three assets.
 """
 
 # @strategy stopLossPct 0.05
