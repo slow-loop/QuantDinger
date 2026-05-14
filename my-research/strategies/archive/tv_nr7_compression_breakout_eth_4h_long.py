@@ -9,13 +9,28 @@ Source:   TradingView NR4/NR7 Volatility Squeeze & Breakouts (TradeTechanalysis)
           LuxAlgo NR4/NR7 with Breakouts:
           https://www.luxalgo.com/library/indicator/nr4-nr7-with-breakouts/
           Scouted 2026-05-14 (non-orthodox altcoin strategy research session).
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-14  code  init. NR7 = current bar range is minimum of last 7 bars.
                     Entry: NR7 bar + next bar breaks above NR7 high + close > EMA50.
                     Stop: NR7 bar low (structural). TP: 2×ATR from entry or prior swing high.
                     Timeout: 20 bars.
+  2026-05-14  run   BTC 4H IS: Sharpe +4.022, Sortino +5.660, Calmar +444.1, IR +4.122,
+                    PF 1.398, Win% 47.8%, payoff 1.528, n=203, exposure 57.2%. FAIL (PF<1.5).
+                    BTC 4H OOS: Sharpe -0.270, Sortino -0.229, PF 1.006, Win% 52.4%,
+                    payoff 0.915, n=42. FAIL.
+                    IS Sharpe 4.022 is overfit — 203 trades over 5 years, EMA50 trend gate
+                    keeps only bull-regime bars; bear-regime expansion breaks DOWN not up.
+                    OOS (2025-2026 bear) collapses immediately: PF 1.006 ≈ coin flip.
+                    Note: first run (15:49:45) had ffill lookahead bug (IS Sharpe 0.531);
+                    fixed entry logic (one-bar-after-NR7 breakout) gave IS 4.022 = worse overfit.
+                    (log: 2026-05-14)
+  2026-05-14  note  Archive. NR7 overfits to bull-regime expansion; any downward NR7 break
+                    is filtered out by EMA50, so only upward expansions in uptrends are caught.
+                    OOS bear market kills the EMA50 gate: no entries = no signal. The
+                    compression→expansion idea is valid but needs a regime-agnostic exit
+                    (both directions). Would need bidirectional version to show real edge.
 """
 
 # @strategy stopLossPct 0.04
@@ -54,19 +69,22 @@ bar_range = df['high'] - df['low']
 min_range  = bar_range.rolling(nr_lookback).min()
 is_nr7     = (bar_range == min_range) & (bar_range > 0)
 
-# Save NR7 bar's high/low for breakout reference (shift to next bar)
-nr7_high = df['high'].where(is_nr7).ffill()
-nr7_low  = df['low'].where(is_nr7).ffill()
-
-# Breakout bar: close breaks above NR7 bar's high on the NEXT bar
-breakout_up = (df['close'] > nr7_high.shift(1)) & ~is_nr7
-
 # Trend gate: close above EMA50
 trend_ok = df['close'] > ema
 
-# Entry: breakout bar + trend aligned + NR7 occurred in prev 3 bars (freshness)
-nr7_recent = is_nr7.rolling(3).max().shift(1).fillna(0).astype(bool)
-df['buy'] = (breakout_up & trend_ok & nr7_recent).fillna(False)
+# Entry: EXACTLY on the bar AFTER an NR7, if it breaks above the NR7 bar's high
+# prev_is_nr7: previous bar was an NR7 bar
+# df['high'].shift(1): high of the previous (NR7) bar
+prev_is_nr7  = is_nr7.shift(1).fillna(False)
+prev_nr7_high = df['high'].shift(1)
+prev_nr7_low  = df['low'].shift(1)
+
+breakout_up  = df['close'] > prev_nr7_high
+df['buy'] = (prev_is_nr7 & breakout_up & trend_ok).fillna(False)
+
+# Carry NR7 high/low for plot only (no logic use)
+nr7_high = df['high'].where(is_nr7).ffill()
+nr7_low  = df['low'].where(is_nr7).ffill()
 
 # Exit: timeout
 df['sell'] = df['buy'].shift(timeout_bars).fillna(False).astype(bool)

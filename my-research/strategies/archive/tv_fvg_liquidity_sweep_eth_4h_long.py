@@ -17,6 +17,17 @@ Source:   ICT Silver Bullet & FVG strategy (Bitget Academy):
 Status:   active
 
 History (append-only, newest at bottom):
+  2026-05-14  run   ETH 4H IS: Sharpe +0.451, Sortino +0.505, Calmar -0.948, IR +0.961,
+                    PF 1.00, Win% 50.3%, payoff 0.99, n=153, exposure 55.2%. FAIL all.
+                    ETH 4H OOS: Sharpe +0.538, PF 1.08, Win% 54.5%, payoff 0.90, n=22. FAIL.
+                    OOS is marginally positive (PF 1.08) but below all pass thresholds.
+                    55% time-in-market is high — trades too frequently, correlation to noise.
+                    (log: 2026-05-14)
+  2026-05-14  note  FVG detection triggering too often (153 IS trades, 55% TiM). The 3-bar
+                    gap condition is loose — many "FVGs" are just normal price movement, not
+                    genuine institutional imbalances. Real FVG requires significant price move
+                    (>1×ATR gap), and entry only on FIRST retest, not repeated retests.
+                    Archive — overfires, no edge. Future work: add minimum FVG size filter.
   2026-05-14  code  init. Three-step detection:
                     (1) Liquidity sweep: bar breaks N-bar high, closes below it (pin bar / engulf).
                     (2) CHoCH (bearish flip): after the sweep, price closes below prior swing low.

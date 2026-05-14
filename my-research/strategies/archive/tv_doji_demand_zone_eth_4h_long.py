@@ -8,7 +8,7 @@ Source:   TradingView "Twisted Forex's Doji+Area" strategy (217 likes):
           Candlestick patterns + supply/demand zones page
           https://www.tradingview.com/scripts/candlestickpatterns/?script_type=strategies
           Scouted 2026-05-14 (non-orthodox altcoin strategy research session).
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-14  code  init. Doji: |close-open|/(high-low) < 0.25 AND bar range > 0.
@@ -16,6 +16,18 @@ History (append-only, newest at bottom):
                     EMA200 gate: close > EMA200 (macro uptrend only).
                     Entry: doji + in_demand_zone + ema200_gate.
                     Stop: demand zone bottom (swing low - 0.5×ATR). Timeout: 20 bars.
+  2026-05-14  run   BTC 4H IS: Sharpe +4.066, Sortino +2.926, Calmar +113.1, IR +3.778,
+                    PF 2.037, Win% 56.5%, payoff 1.571, n=62. FAIL (OOS).
+                    BTC 4H OOS: Sharpe -2.427, Sortino -0.915, PF 0.220, Win% 16.7%,
+                    payoff 1.102, n=6. FAIL all.
+                    (log: 2026-05-14)
+  2026-05-14  note  Archive. IS looks strong but OOS is catastrophic (PF 0.22, Win% 16.7%,
+                    n=6 only). The EMA200 gate restricts OOS to nearly zero entries —
+                    bear market kills doji demand zone setups entirely. Same fundamental
+                    problem as NR7: EMA200 trend gate over-fits to 2020-2025 bull run.
+                    The "doji in demand zone" pattern has no distributional edge beyond
+                    being a proxy for low-volatility support touches; resolve direction
+                    is random.
 """
 
 # @strategy stopLossPct 0.05

@@ -8,13 +8,24 @@ Thesis:   After N consecutive bearish bars (each closing lower than it opened), 
 Source:   TradingView "Bar Counter Trend Reversal" by various authors (569 likes community):
           https://www.tradingview.com/scripts/
           Scouted 2026-05-14 (non-orthodox altcoin strategy research session).
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-14  code  init. Consecutive_bear: rolling count of bars where close < open.
                     S/R gate: price within 2×ATR of rolling N-bar low (structural support).
                     Entry: consecutive_bear >= 5 + S/R gate + current bar is bullish (close > open).
                     Stop: rolling low - 0.5×ATR. Timeout: 15 bars.
+  2026-05-14  run   BTC 4H IS: Sharpe +2.119, Sortino +1.692, Calmar +16.15, IR +1.919,
+                    PF 1.425, Win% 50.8%, payoff 1.380, n=63. FAIL (PF<1.5).
+                    BTC 4H OOS: Sharpe -1.097, Sortino -0.522, PF 0.667, Win% 38.5%,
+                    payoff 1.068, n=13. FAIL all.
+                    (log: 2026-05-14)
+  2026-05-14  note  Archive. IS shows mild edge but OOS collapses hard (Sharpe -1.097,
+                    Win% drops from 50.8% to 38.5%). The "5 consecutive bear bars near support"
+                    pattern is a falling-knife setup in trending bear markets — exactly the
+                    2025-2026 OOS regime. S/R gate (rolling N-bar low) is circular: price is
+                    near its own low by construction after 5 down bars. No structural edge
+                    beyond momentum continuation risk.
 """
 
 # @strategy stopLossPct 0.05

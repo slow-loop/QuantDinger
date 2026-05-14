@@ -14,6 +14,17 @@ Source:   CoinGlass liquidation heatmap analysis:
 Status:   active
 
 History (append-only, newest at bottom):
+  2026-05-14  run   ETH 4H IS: Sharpe +1.566, Sortino +0.846, Calmar +4.955, IR +2.102 (elite),
+                    PF 1.26, Win% 53.7%, payoff 1.09, n=54, exposure 17.8%. FAIL (PF<1.5).
+                    ETH 4H OOS: Sharpe -0.438, PF 0.82, Win% 50.0%, payoff 0.82, n=18. FAIL.
+                    IS structure is strong (IR 2.102), OOS collapses. Small OOS n=18 is noisy.
+                    EMA gate variant tested (tv_liq_wick_sweep_eth_4h_long_ema_gate.py) → worse.
+                    (log: 2026-05-14)
+  2026-05-14  note  IS/OOS split driven by bear market 2025-2026 OOS period. Win rate 53.7%→50%,
+                    payoff 1.09→0.82. Liq sweep mechanism exists in both bull/bear but bear
+                    recoveries weaker. NOT archiving — IR 2.102 IS warrants further iteration
+                    (vol_mult tuning, or multi-symbol diversification across BTC+SOL).
+                    Next: test on BTC/USDT 4H to check if IS alpha generalizes cross-asset.
   2026-05-14  code  init. Wick proxy conditions:
                     (1) bar sweeps N-bar low: low < rolling_min_low (new low)
                     (2) recovery: close > previous close (recovered)

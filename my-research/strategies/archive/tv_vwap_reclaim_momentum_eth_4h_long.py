@@ -10,7 +10,7 @@ Source:   Snappchart VWAP Momentum Strategy (Reclaim setup):
           https://www.snappchart.app/blog/strategy-playbooks/vwap-momentum-trading-strategy
           TradingView VWAP community scripts.
           Scouted 2026-05-14 (non-orthodox altcoin strategy research session).
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-14  code  init. VWAP = rolling volume-weighted price (50-bar window as crypto proxy).
@@ -18,6 +18,19 @@ History (append-only, newest at bottom):
                     Volume gate: volume > 2× vol_SMA20.
                     Stop: VWAP level at entry. TP: prior N-bar high or 2×ATR.
                     Timeout: 20 bars.
+  2026-05-14  run   BTC 4H IS: Sharpe -1.420, Sortino -0.539, Calmar -1.794, IR -0.975,
+                    PF 0.681, Win% 43.8%, payoff 0.875, n=32. FAIL all.
+                    BTC 4H OOS: Sharpe -1.529, Sortino -0.559, PF 0.510, Win% 42.9%,
+                    payoff 0.679, n=7. FAIL all.
+                    Note: first run (15:50:29) had 0 trades due to was_below_enough logic bug
+                    (current bar was required both above AND below VWAP simultaneously);
+                    fixed by shifting was_below_enough to prior bars only. Fixed run = IS -1.420.
+                    (log: 2026-05-14)
+  2026-05-14  note  Archive. Negative Sharpe in both IS and OOS — no edge in this mechanism
+                    for crypto 4H. VWAP reclaims frequently precede failed breakouts (price
+                    touches VWAP then reverses). Rolling 50-bar VWAP is a weak proxy for
+                    true session VWAP. The 2× volume gate catches distribution as often as
+                    accumulation. Fundamentally different from equity intraday VWAP setups.
 """
 
 # @strategy stopLossPct 0.04
@@ -60,13 +73,12 @@ atr = tr.ewm(span=14, adjust=False).mean()
 
 # --- Reclaim detection ---
 below_vwap = df['close'] < vwap
-# Count consecutive bars below VWAP
-consecutive_below = below_vwap.astype(int)
-for i in range(1, below_bars_min):
-    consecutive_below = consecutive_below & below_vwap.shift(i).fillna(True).astype(int)
-was_below_enough = consecutive_below.astype(bool)
 
-# Reclaim bar: current close > VWAP AND was below for ≥ below_bars_min bars
+# was_below_enough: ALL of the previous below_bars_min bars were below VWAP
+# Use shift(1) so we check PAST bars only (not the current bar which may now be above VWAP)
+was_below_enough = below_vwap.shift(1).rolling(below_bars_min).sum() >= below_bars_min
+
+# Reclaim bar: current close > VWAP AND previous close < VWAP AND was below for enough bars
 reclaim = (df['close'] > vwap) & (df['close'].shift(1) < vwap.shift(1)) & was_below_enough
 
 # Entry: reclaim + volume spike

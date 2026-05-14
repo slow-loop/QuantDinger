@@ -15,7 +15,7 @@ Source:   BTC Dominance altseason signals:
           Altcoin sector rotation:
           https://www.spotedcrypto.com/altcoin-sector-rotation-2026-depin-ai-rwa-gaming/
           Scouted 2026-05-14 (non-orthodox altcoin strategy research session).
-Status:   active
+Status:   archived
 
 History (append-only, newest at bottom):
   2026-05-14  code  init. BTC.D proxy gate: EMA50 > EMA200 (golden cross, altcoin regime)
@@ -23,6 +23,19 @@ History (append-only, newest at bottom):
                     Core entry: BOS = close > prior N-bar swing high.
                     Volume confirmation: volume > 1.3× vol_SMA20.
                     Stop: EMA50 break. Timeout: 30 bars.
+  2026-05-14  run   BTC 4H IS: Sharpe +6.446, Sortino +8.267, Calmar +10478, IR +6.314,
+                    PF 2.110, Win% 47.8%, payoff 2.302, n=138, exposure 38.6%. FAIL (OOS).
+                    BTC 4H OOS: Sharpe -1.190, Sortino -0.985, PF 0.770, Win% 28.0%,
+                    payoff 1.980, n=25. FAIL all.
+                    (log: 2026-05-14)
+  2026-05-14  note  Archive. Extreme IS overfit (Sharpe 6.446, Calmar 10478) driven by the
+                    golden-cross gate selecting only 2020-2024 bull-market bars where BOS
+                    trades naturally profit. OOS (2025-2026 bear) golden cross gone → entries
+                    fire at random structure breaks → Win% crashes to 28% with no regime
+                    support. The EMA50 > EMA200 proxy for BTC.D is a lagging, circular
+                    condition — by the time the golden cross fires, altseason alpha is already
+                    priced in. The BTC.D regime idea is conceptually sound but requires
+                    real BTC.D data, not an ETH internal MA proxy.
 """
 
 # @strategy stopLossPct 0.05
