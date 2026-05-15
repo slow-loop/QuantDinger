@@ -38,6 +38,12 @@ History (append-only, newest at bottom):
                     → dedicated file: tv_sfp_reversal_btc_4h_long.py
                     Cross-asset summary: OOS > IS pattern confirmed on ETH, SOL, and BTC.
                     SFP is a consistent bear-market reversal mechanism across all three assets.
+  2026-05-15  run   Small-cap cross-test AVAX/LINK/ARB/OP/DOGE 4H. OOS:
+                    OP PASS 5/5 — Sharpe +2.059, Sortino +1.618, Calmar +15.345,
+                    IR +3.738, PF 1.609, win 56.0%, n=25.
+                    AVAX 4/5 — Sharpe +1.835, IR +2.430, PF 1.642, n=25.
+                    DOGE 2/5 marginal; ARB/LINK failed. OP is the best new SFP candidate.
+                    (log: 2026-05-15T06:17:13..06:18:01)
 """
 
 # @strategy stopLossPct 0.05

@@ -38,6 +38,14 @@ History (append-only, newest at bottom):
                     (3) wick dominance: (close-low)/(high-low) > 0.65 (lower wick large)
                     (4) volume spike: volume > 1.5× vol_SMA20 (liquidation volume)
                     Stop: bar low - 0.5×ATR. Timeout: 15 bars.
+  2026-05-15  run   Small-cap cross-test AVAX/LINK/ARB/OP/DOGE 4H. OOS:
+                    DOGE PASS 5/5 — Sharpe +3.332, Sortino +2.417, Calmar +30.257,
+                    IR +2.723, PF 3.749, win 78.6%, n=14.
+                    LINK PASS 5/5 — Sharpe +2.599, Sortino +1.855, Calmar +23.573,
+                    IR +2.259, PF 3.645, n=14.
+                    AVAX 4/5 — Sharpe +1.286, IR +1.954, PF 1.577, n=14.
+                    OP 3/5; ARB failed. Raw liq-wick beats funding-gated variant.
+                    (log: 2026-05-15T06:15:01..06:15:52)
 """
 
 # @strategy stopLossPct 0.05

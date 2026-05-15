@@ -1,3 +1,19 @@
+"""
+Strategy: funding_rate_bottom_fisher
+Thesis:   Price z-score capitulation plus negative funding should catch short-squeeze
+          bottoms. Kept as a simple funding baseline against the newer funding-z strategy.
+Status:   active
+
+History (append-only, newest at bottom):
+  2026-05-15  run   Cross-test AVAX/LINK/ARB/OP/DOGE 4H. OOS:
+                    DOGE 4/5 — Sharpe +2.684, IR +2.044, PF 6.750, n=6.
+                    LINK 4/5 — Sharpe +2.549, Sortino +1.490, IR +1.832, PF 4.004, n=8.
+                    ARB 4/5 — Sharpe +1.632, IR +1.357, PF 1.978, n=12.
+                    OP 2/5 marginal; AVAX failed. Strong but sparse; newer
+                    tv_funding_extreme_long_4h has better AVAX/DOGE coverage.
+                    (log: 2026-05-15T06:12:51..06:13:41)
+"""
+
 # @strategy stopLossPct 0.08
 # @strategy trailingEnabled true
 # @strategy trailingStopPct 0.05
@@ -67,4 +83,3 @@ output = {
         {"name": "Sell Signal", "data": df['sell'].astype(int).tolist(), "type": "scatter", "color": "#FF0000"}
     ]
 }
-

@@ -41,6 +41,13 @@ History (append-only, newest at bottom):
                     FAIL. BTC too liquid for selling cascades — deep order book absorbs without
                     sharp reversal. Vol Climax is SOL-specific; BTC has no edge.
                     Cross-asset: SOL >> ETH > BTC for this mechanism.
+  2026-05-15  run   Small-cap cross-test AVAX/LINK/ARB/OP/DOGE 4H. OOS:
+                    ARB PASS 5/5 — Sharpe +2.916, Sortino +1.788, Calmar +21.955,
+                    IR +2.095, PF 4.590, win 75.0%, n=8.
+                    AVAX 4/5 — Sharpe +1.662, IR +2.050, PF 2.343, n=8.
+                    LINK 4/5 — Sharpe +1.436, IR +1.695, PF 1.695, n=14.
+                    DOGE 3/5; OP failed. ARB is the best new Vol Climax candidate.
+                    (log: 2026-05-15T06:16:07..06:16:59)
 """
 
 # @strategy stopLossPct 0.05

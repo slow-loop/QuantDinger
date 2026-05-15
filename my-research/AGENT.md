@@ -120,6 +120,183 @@ Source URL 已出現過 → 跳過，換下一個。TV script URL 是唯一 key�
 
 **沒有 inbox**：找到就 port，backtest 是唯一品質守門員。
 
+## [SOCIAL SCOUTING NOTES — 2026-05-15]
+
+This section records the 2026-05-15 X / Reddit / public-web scouting pass for
+small-cap altcoins, memecoins, non-traditional crypto strategies, and emerging
+trading ideas. Treat everything here as **candidate research**, not validated
+edge. Before promoting anything to Track A/B, convert the idea into a one-line
+Hypothesis plus vectorizable entry/exit conditions.
+
+### Highest-priority test candidates
+
+| Priority | Candidate | Testable form | Why it matters for small caps | Source status |
+|---|---|---|---|---|
+| 1 | Funding / crowding reversal | Extreme `funding_rate` + OI / wick / momentum exhaustion | Small-cap perp funding is noisy but can reveal one-sided leverage | Directly testable if `funding_rate` exists; OI requires external data |
+| 2 | Funding Extreme + Liq Wick | Extreme negative funding + large lower wick = long-reversal event | Combines positioning stress with forced-selling candle structure | OHLC + funding, no extra API if funding is in df |
+| 3 | OI Surge + Price Compression Breakout | OI z-score up, ATR/range compressed, then price breaks range | Small caps often accumulate leverage before expansion | Needs OI feed; should reject overheated funding |
+| 4 | Per-asset walk-forward | Run same mechanism on AVAX/DOGE/ARB/OP/LINK separately | BTC parameters should not be assumed portable to alt perps | Track A/Track B evaluation discipline |
+| 5 | Alt regime gate | BTC.D downtrend + ETH/BTC uptrend + TOTAL3/OTHERS.D breakout | Avoids trading alts during false rotation | Requires external regime data |
+
+### Small-cap / altcoin strategies that can map to OHLC-style testing
+
+1. **Funding Rate Extreme Long / Short**
+   - Long setup: `funding_rate` is at an extreme negative percentile or z-score,
+     ideally with a lower wick / sell climax.
+   - Short setup: `funding_rate` is at an extreme positive percentile or z-score,
+     OI is elevated, and upside momentum is stalling.
+   - Avoid interpreting funding alone as edge. The stronger hypothesis is
+     crowding reversal: extreme funding marks one-sided leverage that can unwind.
+   - Candidate factor name: `funding_crowding_reversal`.
+
+2. **Funding Extreme + Liquidation Wick**
+   - Entry event: extreme negative funding plus a large lower wick.
+   - Possible wick definition: `(min(open, close) - low) / close` above rolling
+     percentile, with close reclaiming a portion of candle range.
+   - Intended improvement over raw liq-wick: funding filters out random wicks
+     and keeps only positioning-stress events.
+   - Candidate factor name: `funding_liq_wick_reversal`.
+
+3. **OI Surge + Price Flat Breakout**
+   - Entry filter: OI surge while price range / ATR is compressed.
+   - Trigger: close breaks compression high / low.
+   - Safety filter: do not chase if funding is already extremely positive on
+     long breakouts or extremely negative on short breakdowns.
+   - Small-cap thesis: thin books and noisy OI can still matter during early perp
+     listings or when leverage accumulates before a move.
+   - Candidate factor name: `oi_compression_breakout`.
+
+4. **Alt/BTC Relative Strength Breakout**
+   - Compare target pair against BTC or ETH benchmark.
+   - Candidate signal: target/BTC relative line breaks its own range or moving
+     average while BTC is not breaking down.
+   - Use as a rank / filter first, not a standalone all-in strategy.
+   - Candidate factor name: `alt_relative_strength_breakout`.
+
+5. **Funding cost as a backtest penalty**
+   - Reddit algo discussions repeatedly warn that crypto perp backtests often
+     treat perps like spot and omit funding.
+   - Before trusting any perp strategy, estimate:
+     `expected_edge > expected_funding_cost + commission + slippage`.
+   - This is especially important for multi-day altcoin holds and cash-and-carry
+     variants.
+
+### Non-traditional / social strategies to track
+
+1. **BTC.D + ETH/BTC + TOTAL3 / OTHERS.D regime gate**
+   - Social framing: altseason confirmation requires more than BTC dominance
+     falling. Stronger gate is BTC.D downtrend, ETH/BTC strength, and TOTAL3 or
+     OTHERS.D breakout.
+   - Use as market regime before enabling alt-beta strategies.
+   - Avoid treating BTC.D alone as a precise entry signal.
+
+2. **OTHERS.D small-cap season signal**
+   - OTHERS.D tracks the long-tail alt universe better than top-heavy TOTAL.
+   - Use as external context for whether small-cap strategies should be active.
+   - Candidate implementation: daily/4H regime column merged into df, then gate
+     small-cap long strategies only when OTHERS.D is above breakout / trend
+     threshold.
+
+3. **Narrative rotation basket**
+   - 2026 social/research narratives found in the scan: meme launchpads, ICO
+     launchpads, prediction markets, privacy/ZK, perp DEXs, stablecoins /
+     stablechains, ETFs / DATcos, RWA, crypto cards, AI infra, DePIN, gaming,
+     and meme coins.
+   - Treat as sector relative-strength research, not single-symbol magic.
+   - Possible workflow: define sector baskets, rank 7d/30d relative strength,
+     then only test breakouts in the leading sector.
+
+4. **Memecoin quick-scalp microstructure**
+   - Reddit Solana / memecoin discussions frame the current style as DEX /
+     terminal / Telegram-bot quick scalping rather than buy-and-hold.
+   - Socially mentioned tools and venues include Jupiter, Raydium, Orca, Axiom,
+     Trojan, GMGN, Banana Pro, and Pump.fun-style launchpads.
+   - Useful features if on-chain data is added later: wallet diversity, trade
+     count, holder concentration, new-wallet ratio, bundled buys, liquidity lock
+     / burn status, and rapid volume decay after launch.
+   - Do not port this directly into OHLC strategies without liquidity and rug
+     filters.
+
+5. **Pump.fun realized-profit / exit discipline**
+   - CoinGecko reported Pump.fun profitable-wallet share rose in early 2026, but
+     much of the realized profit was small and excludes unsold bagholders.
+   - Research implication: memecoin edge is more likely in entry/exit speed,
+     sizing, and sell discipline than in passive holding.
+   - Possible rule idea: force partial exits after velocity spike, reject holds
+     after volume decay.
+
+6. **Smart-money / Hyperliquid wallet tracking**
+   - Emerging social strategy: track profitable Hyperliquid or on-chain wallets.
+   - Do not blindly copy. Filter for 90d+ history, controlled drawdown, stable
+     trade frequency, low single-trade concentration, and no obvious market-maker
+     / hedging cluster behavior.
+   - Better QuantDinger use: convert smart-wallet direction into a weak external
+     factor or confirmation label, not a primary signal.
+
+7. **Copy-trading negative filter**
+   - High PnL wallets can be luck, incomplete realized PnL, hedged one-leg
+     exposure, or category overfit.
+   - Useful inverse feature: avoid trades where copied wallet quality is poor,
+     deteriorating, or dominated by a single recent win.
+
+8. **Prediction-market wallet / event arbitrage**
+   - Polymarket / Kalshi style discussions center on specialist-wallet tracking,
+     market mispricing, and cross-market arb.
+   - This is not OHLC-portable, but the research pattern is useful: build a
+     mispricing scanner rather than blindly following high-PnL wallets.
+
+9. **Equity / commodity perpetuals**
+   - 2026 discussions highlight crypto venues listing 24/7 equity / commodity
+     perps, including stock perps and pre-IPO style markets.
+   - Possible edge classes: off-hours basis dislocation, funding imbalance,
+     oracle / underlying-market closed-hour risk, crypto risk-on spillover.
+   - Risk: multi-week holds can be dominated by funding costs.
+
+### Symbols worth cross-testing first
+
+```
+AVAX/USDT, LINK/USDT, ARB/USDT, OP/USDT, DOGE/USDT
+```
+
+Suggested mechanism-symbol pairs:
+- **Vol Climax / Liq Wick x AVAX**: high beta, thinner book, cascade-prone.
+- **SFP / Stop Hunt x DOGE**: retail stop clusters and meme liquidity.
+- **Funding Extreme x ARB/OP**: L2 tokens can show exaggerated perp funding.
+- **Relative Strength x LINK/AVAX**: better candidates for sector/quality alt
+  rotation than pure memecoin behavior.
+
+### Source notes from the 2026-05-15 scan
+
+Use these as source breadcrumbs when turning an idea into a factor/strategy:
+
+- Reddit / algo: discussions warned that perp backtests often miss funding
+  costs and that one BTC config does not reliably port to ETH/SOL/alt perps.
+- Reddit / CryptoMarkets: recent threads discuss abnormal small-cap funding
+  spikes and BTC dominance interpretation.
+- Reddit / Solana and memecoin communities: current memecoin trading is mostly
+  DEX / terminal / Telegram-bot quick scalping, with high rug/liquidity risk.
+- CoinGecko: 2026 narrative reports covered meme launchpads, prediction
+  markets, privacy/ZK, perp DEXs, RWA, stablecoin/stablechain themes, and
+  Pump.fun profitable-wallet statistics.
+- Trading / exchange research posts: funding + open interest are commonly
+  framed as crowding / leverage indicators, not standalone directional signals.
+- Hyperliquid / on-chain articles and Reddit threads: smart-money copy trading
+  is popular, but wallet-quality filters are the real research surface.
+- Public X-indexed material: BTC.D, ETH/BTC, TOTAL3, OTHERS.D, funding, OI,
+  perp basis, stock perps, and Hyperliquid wallet tracking are recurring themes.
+
+Concrete URLs captured during the scan:
+- https://blofin.com/academy/education/funding-and-open-interest-signals
+- https://www.walletfinder.ai/blog/crypto-funding-rates
+- https://www.coingecko.com/research/publications/pump-fun-traders-are-making-a-comeback
+- https://www.coingecko.com/learn/crypto-narratives
+- https://www.coingecko.com/research/publications/rwa-report-2026
+- https://crypto.com/us/research/equity-commodity-perps-jan-2026
+- https://arx.trade/blog/why-copy-trade-smart-money-hyperliquid/
+- https://coincub.com/blog/altcoin-rotation-when-to-move/
+- https://www.kucoin.com/th/news/flash/others-d-aligns-with-qt-end-suggesting-2026-alt-season-pattern
+- https://doc.methodalgo.com/docs/indicator/redeye-raven/start/
+
 ---
 
 ## [WORKFLOW SOP]
